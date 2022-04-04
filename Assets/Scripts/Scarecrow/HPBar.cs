@@ -26,4 +26,9 @@ public class HPBar : MonoBehaviour
     {
         _text.transform.rotation = Quaternion.LookRotation(_text.transform.position - _cameraAtLook.transform.position);
     }
+
+    private void OnDestroy()
+    {
+        _scarecrow.OnHPChanged -= ChangeHPTextValue;
+    }
 }

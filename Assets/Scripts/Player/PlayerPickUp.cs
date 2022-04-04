@@ -20,7 +20,7 @@ public class PlayerPickUp : MonoBehaviour
     private void SetWeapon(InputAction.CallbackContext callback, bool inLeftHand)
     {
 
-        var weapon = Sercher.Instance.GetObjectFront<BaseWeapon>();
+        var weapon = Searcher.Instance.GetObjectFront<BaseWeapon>();
 
         if (weapon != null && (inLeftHand ? _player.LeftWeapon:_player.RightWeapon)==null)
         {

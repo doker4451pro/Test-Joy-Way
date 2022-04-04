@@ -43,9 +43,14 @@ public class Scarecrow : MonoBehaviour
             _isFire = value;
             OnFire?.Invoke(value);
             if (value)
+            {
                 _fireCorutine = StartCoroutine(Fire());
+            }
             else
-                StopCoroutine(_fireCorutine);
+            {
+                if (_fireCorutine != null)
+                    StopCoroutine(_fireCorutine);
+            }
         }
     }
 
@@ -82,7 +87,6 @@ public class Scarecrow : MonoBehaviour
         {
             if (FireState)
             {
-                HP -= 1;
                 //restart Cotoutine
                 _timeToFire = 0;
             }
@@ -91,24 +95,26 @@ public class Scarecrow : MonoBehaviour
                 if (WetState == 0)
                 {
                     FireState = true;
-                    HP -=1;
                 }
                 else 
                 {
                     WetState -= 1;
                 }
             }
+            HP -=1;
         }
     }
 
     private IEnumerator Fire() 
     {
+        _timeToFire = 0;
         while (_timeToFire <= 10) 
         {
             HP -= 5;
             yield return new WaitForSecondsRealtime(1);
             _timeToFire+= 1;
         }
+        FireState = false;
     }
 
     private void Death() 
@@ -120,7 +126,7 @@ public class Scarecrow : MonoBehaviour
     {
         HP = _scarecrowData.MaxHP;
         WetState = 0;
-        _isFire = false;
+        FireState = false;
     }
 
     #region UnityMethod

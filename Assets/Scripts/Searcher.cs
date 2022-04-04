@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Sercher : MonoBehaviour
+public class Searcher : MonoBehaviour
 {
-    public static Sercher Instance { get; private set; }
+    public static Searcher Instance { get; private set; }
 
     [SerializeField] private Camera _camera;
     private void Awake()

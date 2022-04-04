@@ -27,4 +27,9 @@ public class ScarecrowMaterial : MonoBehaviour
         else
             _material.color = _data.DefaultColor;
     }
+    private void OnDestroy()
+    {
+        _scarecrow.OnFire -= ChangeFireMaterial;
+        _scarecrow.OnWetStateChanged -= ChangeWetMaterial;
+    }
 }
