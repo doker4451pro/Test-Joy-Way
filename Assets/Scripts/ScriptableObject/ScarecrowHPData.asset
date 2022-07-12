@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a11a993947d8d3499731d3fb5157907, type: 3}
-  m_Name: ScarecrowData
+  m_Script: {fileID: 11500000, guid: 8e81a7c87ff9f3243beb3d85b552ea0c, type: 3}
+  m_Name: ScarecrowHPData
   m_EditorClassIdentifier: 
   _maxHP: 1000
-  _maxWet: 100
-  _defaultColor: {r: 1, g: 1, b: 1, a: 0}
-  _wetColor: {r: 0, g: 0, b: 1, a: 0}
-  _fireColor: {r: 1, g: 0, b: 0, a: 0}

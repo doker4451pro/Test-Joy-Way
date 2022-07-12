@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ScarecrowMaterial : MonoBehaviour
@@ -6,30 +7,33 @@ public class ScarecrowMaterial : MonoBehaviour
     [SerializeField] private ScarecrowMaterialData _data;
     [SerializeField] private Material _material;
 
-    private void Start()
+    private void OnEnable()
     {
-        _scarecrow.OnFire += ChangeFireMaterial;
-        _scarecrow.OnWetStateChanged += ChangeWetMaterial;
-    }
-    private void OnApplicationQuit()
-    {
-        _material.color = _data.DefaultColor;
+        _scarecrow.OnFire += ChangeFireMaterialTo;
+        _scarecrow.OnWetStateChanged += ChangeWetMaterialTo;
     }
 
-    private void ChangeWetMaterial(float value) 
+    private void OnDisable()
     {
-        _material.color = Color.Lerp(_data.DefaultColor, _data.WetColor, value);
+        _scarecrow.OnFire -= ChangeFireMaterialTo;
+        _scarecrow.OnWetStateChanged -= ChangeWetMaterialTo;
     }
-    private void ChangeFireMaterial(bool flag) 
+    
+    private void ChangeFireMaterialTo(bool isFire) 
     {
-        if (flag)
+        if (isFire)
             _material.color = _data.FireColor;
         else
             _material.color = _data.DefaultColor;
     }
-    private void OnDestroy()
+    
+    private void ChangeWetMaterialTo(float value) 
     {
-        _scarecrow.OnFire -= ChangeFireMaterial;
-        _scarecrow.OnWetStateChanged -= ChangeWetMaterial;
+        _material.color = Color.Lerp(_data.DefaultColor, _data.WetColor, value);
+    }
+    
+    private void OnApplicationQuit()
+    {
+        _material.color = _data.DefaultColor;
     }
 }

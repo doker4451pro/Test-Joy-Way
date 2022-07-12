@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,12 +12,21 @@ public class PlayerPickUp : MonoBehaviour
 
     [SerializeField] private Player _player;
 
-    private void Start()
+    private void OnEnable()
     {
-        _pickUpLeftWeapon.action.started += ctx => SetWeapon(ctx, true);
-        _pickUpRightWeapon.action.started += ctx => SetWeapon(ctx, false);
-
+        _pickUpLeftWeapon.action.started += SetWeaponInLeftHand;
+        _pickUpRightWeapon.action.started += SetWeaponInRightHand;
     }
+
+    private void OnDisable()
+    {
+        _pickUpLeftWeapon.action.started -= SetWeaponInLeftHand;
+        _pickUpRightWeapon.action.started -= SetWeaponInRightHand;
+    }
+
+    private void SetWeaponInLeftHand(InputAction.CallbackContext callback) => SetWeapon(callback, true);
+    private void SetWeaponInRightHand(InputAction.CallbackContext callback) => SetWeapon(callback, false);
+    
     private void SetWeapon(InputAction.CallbackContext callback, bool inLeftHand)
     {
 
@@ -24,12 +34,12 @@ public class PlayerPickUp : MonoBehaviour
 
         if (weapon != null && (inLeftHand ? _player.LeftWeapon:_player.RightWeapon)==null)
         {
-            SetWeaponInHend(inLeftHand ? _leftHand : _rightHand, weapon);
+            SetWeaponInHand(inLeftHand ? _leftHand : _rightHand, weapon);
         }
 
         _player.SetWeapon(weapon, inLeftHand);
     }
-    private void SetWeaponInHend(Transform hand,BaseWeapon weapon) 
+    private void SetWeaponInHand(Transform hand,BaseWeapon weapon) 
     {
         weapon.transform.position = hand.transform.position;
         weapon.transform.rotation = hand.transform.rotation;

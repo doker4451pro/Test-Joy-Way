@@ -23,9 +23,8 @@ public class Searcher : MonoBehaviour
 
         if (hit.collider != null)
         {
-            var foundObject = hit.collider.GetComponent<T>();
+            var foundObject = hit.collider.GetComponentInParent<T>();
             return foundObject;
-
         }
         return null;
     }

@@ -4,19 +4,19 @@ using UnityEngine.InputSystem;
 
 public class WaterStone : BaseWeapon
 {
-    [SerializeField] private string _nameBullet="WaterBall";
     [SerializeField] private float _forseStartBullet;
     [SerializeField] private Transform _startBullet;
+    
     protected override void StartFire(InputAction.CallbackContext context)
     {
-        var bullet=ObjectPooler.Instance.GetPoolObjectByName(_nameBullet);
-        SetBulletToStartPosition(bullet);
-        bullet.GetComponent<Rigidbody>().AddForce(transform.forward*_forseStartBullet);
+        var bullet=ObjectPooler.Instance.GetObjectOfType<WaterBall>();
+        SetBulletToStartPosition(bullet.transform);
+        bullet.AddForce(transform.forward*_forseStartBullet);
     }
 
-    private void SetBulletToStartPosition(GameObject bullet) 
+    private void SetBulletToStartPosition(Transform bulletTransform) 
     {
-        bullet.transform.position = _startBullet.position;
-        bullet.transform.rotation = _startBullet.rotation;
+        bulletTransform.position = _startBullet.position;
+        bulletTransform.rotation = _startBullet.rotation;
     }
 }

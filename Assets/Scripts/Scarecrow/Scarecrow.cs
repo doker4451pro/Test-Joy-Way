@@ -1,132 +1,118 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(ScarecrowHP))]
+[SelectionBase]
 public class Scarecrow : MonoBehaviour
 {
-    public event Action<int> OnHPChanged;
     public event Action<bool> OnFire;
     public event Action<float> OnWetStateChanged;
 
-    [SerializeField] private ScarecrowData _scarecrowData;
+    [SerializeField] private ScarecrowStateData _scarecrowStateData;
+    [SerializeField] private ScarecrowHP _scarecrowHp;
     [SerializeField] private int _deltaFireDamage = 10;
     [SerializeField] private int _deltaWetDamage = 10;
     [SerializeField] private int _deltaWetState = 10;
-
-    private int _HP;
+    [SerializeField] private int _damageFromFire = 5;
+    
     private int _wetState;
     private bool _isFire;
     private Coroutine _fireCorutine;
     private int _timeToFire;
 
-
-    public int HP 
-    { 
-        get { return _HP; }
-        private set 
-        {
-            if (value <= 0)
-            {
-                Death();
-                return;
-            }
-            _HP = value;
-            OnHPChanged?.Invoke(_HP);
-        }
-    }
-    public bool FireState 
-    {
-        get { return _isFire; }
-        private set 
-        {
-            _isFire = value;
-            OnFire?.Invoke(value);
-            if (value)
-            {
-                _fireCorutine = StartCoroutine(Fire());
-            }
-            else
-            {
-                if (_fireCorutine != null)
-                    StopCoroutine(_fireCorutine);
-            }
-        }
-    }
-
-    public int WetState 
-    {
-        get { return _wetState; }
-        set 
-        {
-            _wetState= Mathf.Clamp(value, 0, _scarecrowData.MaxWet);
-            OnWetStateChanged?.Invoke((float)_wetState / _scarecrowData.MaxWet);
-        }
-    }
-
-    public void TakeDamage(int damage=0, DamageType type=DamageType.None) 
+    public void TakeDamage(int damage = 0, DamageType type = DamageType.None)
     {
         if (type == DamageType.None)
         {
-            if (FireState)
-                HP -= (damage + _deltaFireDamage);
-            else if (_wetState != 0)
-                HP -= (damage - _deltaWetDamage);
-            else
-                HP -= damage;
+            TakeDamage(damage);
         }
         else if (type == DamageType.Water)
         {
-            if (FireState)
-            {
-                FireState = false;
-            }
-            WetState += _deltaWetState;
+            TakeWaterDamage();
+        }
+        else if (type == DamageType.Fire)
+        {
+            TakeFireDamage();
+        }
+    }
+
+    private void TakeDamage(int damage)
+    {
+        if (_isFire)
+            _scarecrowHp.TakeDamage(damage + _deltaFireDamage);
+        else if (_wetState != 0)
+            _scarecrowHp.TakeDamage(damage - _deltaWetDamage);
+        else
+            _scarecrowHp.TakeDamage(damage);
+    }
+
+    private void TakeWaterDamage()
+    {
+        if (_isFire)
+        {
+            ChangeFireStateTo(false);
+        }
+        ChangeWaterStateToDelta(_deltaWetState);
+    }
+
+    private void TakeFireDamage()
+    {
+        if (_isFire)
+        {
+            //restart Cotoutine
+            _timeToFire = 0;
         }
         else 
         {
-            if (FireState)
+            if (_wetState == 0)
             {
-                //restart Cotoutine
-                _timeToFire = 0;
+                ChangeFireStateTo(true);
             }
             else 
             {
-                if (WetState == 0)
-                {
-                    FireState = true;
-                }
-                else 
-                {
-                    WetState -= 1;
-                }
+                ChangeWaterStateToDelta(-1);
             }
-            HP -=1;
+                
         }
+        _scarecrowHp.TakeDamage(1);
     }
 
-    private IEnumerator Fire() 
+    private void ChangeWaterStateToDelta(int deltaWaterState)
     {
-        _timeToFire = 0;
-        while (_timeToFire <= 10) 
+        _wetState += deltaWaterState;
+        _wetState = Mathf.Clamp(_wetState, 0, _scarecrowStateData.MaxWet);
+        OnWetStateChanged?.Invoke((float)_wetState / _scarecrowStateData.MaxWet);
+
+    }
+    
+    private void ChangeFireStateTo(bool isFire)
+    {
+        _isFire = isFire;
+        OnFire?.Invoke(isFire);
+        if (isFire)
         {
-            HP -= 5;
-            yield return new WaitForSecondsRealtime(1);
-            _timeToFire+= 1;
+            _fireCorutine = StartCoroutine(Fire());
         }
-        FireState = false;
+        else
+        {
+            if (_fireCorutine != null)
+                StopCoroutine(_fireCorutine);
+        }
     }
-
-    private void Death() 
+    
+    private IEnumerator Fire()
     {
-        gameObject.SetActive(false);
-    }
-
-    private void SetDefaultValue() 
-    {
-        HP = _scarecrowData.MaxHP;
-        WetState = 0;
-        FireState = false;
+        var timeWaitBetweenDamage = 1;
+        _timeToFire = 0;
+        while (_timeToFire <= _scarecrowStateData.TimeToFire) 
+        {
+            _scarecrowHp.TakeDamage(_damageFromFire);
+            
+            yield return new WaitForSecondsRealtime(timeWaitBetweenDamage);
+            _timeToFire+= timeWaitBetweenDamage;
+        }
+        ChangeFireStateTo(false);
     }
 
     #region UnityMethod
@@ -146,4 +132,11 @@ public class Scarecrow : MonoBehaviour
         TakeDamage(type: DamageType.Fire);
     }
     #endregion
+    
+    private void SetDefaultValue() 
+    {
+        _scarecrowHp.SetDefaultValue();
+        ChangeWaterStateToDelta(-_scarecrowStateData.MaxWet); 
+        ChangeFireStateTo(false);
+    }
 }

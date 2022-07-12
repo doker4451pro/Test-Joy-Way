@@ -3,23 +3,30 @@ using UnityEngine;
 public class WaterBall : MonoBehaviour, IPoolObject
 {
     private Rigidbody _rigidbody;
-    public void Awake()
+
+    public void AddForce(Vector3 force)
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.AddForce(force);
     }
+
     public void GetFromPool()
     {
         gameObject.SetActive(true);
         _rigidbody.isKinematic = false;
 
     }
-
+    
     public void ReturnToPool()
     {
         gameObject.SetActive(false);
         _rigidbody.isKinematic = true;
     }
 
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+    
     private void OnCollisionEnter(Collision collision)
     {
         ReturnToPool();

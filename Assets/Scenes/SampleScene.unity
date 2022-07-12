@@ -5350,6 +5350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -5437,7 +5438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bcadace810ad904f9cd63b45fed332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameBullet: WaterBall
   _forseStartBullet: 500
   _startBullet: {fileID: 2082661019}
 --- !u!23 &537288253
@@ -5536,7 +5536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bcadace810ad904f9cd63b45fed332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameBullet: WaterBall
   _forseStartBullet: 500
   _startBullet: {fileID: 1211623846}
 --- !u!23 &605043768
@@ -11499,9 +11498,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93fe75ebdd1a032438d2c9cf95f33ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsToPool:
+  _poolObjectsList:
   - Name: WaterBall
-    ObjectToPool: {fileID: 8897938986409454335, guid: d9e54178725cd2b409482f576668e635, type: 3}
+    ObjectToPool: {fileID: 8897938986409454333, guid: d9e54178725cd2b409482f576668e635, type: 3}
     StartCapacity: 10
 --- !u!4 &1672547793
 Transform:
@@ -11529,6 +11528,7 @@ GameObject:
   - component: {fileID: 1996741653}
   - component: {fileID: 1996741654}
   - component: {fileID: 1996741655}
+  - component: {fileID: 1996741656}
   - component: {fileID: 1996741651}
   m_Layer: 0
   m_Name: Scarecrow
@@ -11579,10 +11579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54167d5eaedce38408746fb831925695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scarecrowData: {fileID: 11400000, guid: dec93299c4dee914fada9a5241c02ccb, type: 2}
+  _scarecrowStateData: {fileID: 11400000, guid: 13343d618617757428504aa95c51db11, type: 2}
+  _scarecrowHp: {fileID: 1996741656}
   _deltaFireDamage: 10
   _deltaWetDamage: 10
   _deltaWetState: 10
+  _damageFromFire: 5
 --- !u!114 &1996741654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11595,7 +11597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c8aa430b473ba4a863b60c7be05eab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scarecrow: {fileID: 1996741653}
+  _scarecrowHP: {fileID: 1996741656}
   _text: {fileID: 1623135953}
   _cameraAtLook: {fileID: 963194227}
 --- !u!114 &1996741655
@@ -11613,6 +11615,19 @@ MonoBehaviour:
   _scarecrow: {fileID: 1996741653}
   _data: {fileID: 11400000, guid: 018542eca07c308428e28db70aadb837, type: 2}
   _material: {fileID: 2100000, guid: 62e70ee68df341148adb64556b713c6c, type: 2}
+--- !u!114 &1996741656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996741650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e30863e541e4f4bbc387ffc5bbe7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scarecrowHPData: {fileID: 11400000, guid: 56667681d370df941a4726fbe73bd4b6, type: 2}
 --- !u!1 &2082661018
 GameObject:
   m_ObjectHideFlags: 0
