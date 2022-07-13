@@ -8,7 +8,6 @@ public class ObjectPooler : MonoBehaviour
     
     [SerializeField] private List<PoolItem> _poolObjectsList;
     
-
     private Dictionary<Type,List<MonoBehaviour>> _dictPoolObjects;
     private Dictionary<Type, Transform> _dictionaryRootTransforms;
 
@@ -31,17 +30,15 @@ public class ObjectPooler : MonoBehaviour
             _dictPoolObjects.Add(item.ObjectToPool.GetType(), poolList);
         }
     }
-
-    //TODO сделать нормально
+    
     private Transform GetRootByType(Type type)
     {
-        Transform rootTransform;
-        if (!_dictionaryRootTransforms.TryGetValue(type, out rootTransform))
+        if (!_dictionaryRootTransforms.TryGetValue(type, out var rootTransform))
         {
             var go = new GameObject(type.ToString());
             go.transform.SetParent(transform);
             rootTransform = go.transform;
-            Debug.Log(type);
+            _dictionaryRootTransforms.Add(type, rootTransform);
         }
 
         return rootTransform;
@@ -49,8 +46,7 @@ public class ObjectPooler : MonoBehaviour
 
     public T GetObjectOfType<T>() where T : MonoBehaviour
     {
-        var list = new List<MonoBehaviour>();
-        if (_dictPoolObjects.TryGetValue(typeof(T), out list))
+        if (_dictPoolObjects.TryGetValue(typeof(T), out var list))
         {
             MonoBehaviour returnedMonoBehaviour = null;
             for (int i = 0; i < list.Count; i++)
@@ -75,7 +71,7 @@ public class ObjectPooler : MonoBehaviour
         }
         else
         {
-            return null;
+            throw new InvalidOperationException("Invalid Type");
         }
     }
 

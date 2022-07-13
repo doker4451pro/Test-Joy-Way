@@ -18,7 +18,7 @@ public class Scarecrow : MonoBehaviour
     
     private int _wetState;
     private bool _isFire;
-    private Coroutine _fireCorutine;
+    private Coroutine _fireCoroutine;
     private int _timeToFire;
 
     public void TakeDamage(int damage = 0, DamageType type = DamageType.None)
@@ -34,6 +34,10 @@ public class Scarecrow : MonoBehaviour
         else if (type == DamageType.Fire)
         {
             TakeFireDamage();
+        }
+        else
+        {
+            throw new InvalidOperationException("Invalid damage type");
         }
     }
 
@@ -92,12 +96,12 @@ public class Scarecrow : MonoBehaviour
         OnFire?.Invoke(isFire);
         if (isFire)
         {
-            _fireCorutine = StartCoroutine(Fire());
+            _fireCoroutine = StartCoroutine(Fire());
         }
         else
         {
-            if (_fireCorutine != null)
-                StopCoroutine(_fireCorutine);
+            if (_fireCoroutine != null)
+                StopCoroutine(_fireCoroutine);
         }
     }
     

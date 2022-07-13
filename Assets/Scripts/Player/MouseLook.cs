@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField,Range(0,100)] private int mouseSensitivity=100;
+    [SerializeField,Range(0,100)] private int _mouseSensitivity=100;
     [SerializeField] private InputActionReference _mouseDelta;
     [SerializeField] private Transform _bodyTransform;
 
@@ -15,8 +15,8 @@ public class MouseLook : MonoBehaviour
     }
     void Update()
     {
-        var mouseX = _mouseDelta.action.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
-        var mouseY = _mouseDelta.action.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+        var mouseX = _mouseDelta.action.ReadValue<Vector2>().x * _mouseSensitivity * Time.deltaTime;
+        var mouseY = _mouseDelta.action.ReadValue<Vector2>().y * _mouseSensitivity * Time.deltaTime;
 
 
         xRotation -= mouseY;

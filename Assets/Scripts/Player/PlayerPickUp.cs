@@ -34,16 +34,16 @@ public class PlayerPickUp : MonoBehaviour
 
         if (weapon != null && (inLeftHand ? _player.LeftWeapon:_player.RightWeapon)==null)
         {
-            SetWeaponInHand(inLeftHand ? _leftHand : _rightHand, weapon);
+            SetWeaponInHand(inLeftHand ? _leftHand : _rightHand, weapon.transform);
         }
 
         _player.SetWeapon(weapon, inLeftHand);
     }
-    private void SetWeaponInHand(Transform hand,BaseWeapon weapon) 
+    private void SetWeaponInHand(Transform hand,Transform weapon) 
     {
-        weapon.transform.position = hand.transform.position;
-        weapon.transform.rotation = hand.transform.rotation;
+        weapon.position = hand.position;
+        weapon.rotation = hand.rotation;
 
-        weapon.transform.SetParent(hand);
+        weapon.SetParent(hand);
     }
 }

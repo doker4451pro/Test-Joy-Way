@@ -6097,7 +6097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f330c05af1208b41a37644d8ab53cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 10
+  _mouseSensitivity: 10
   _mouseDelta: {fileID: -581722323626258100, guid: 2e550e94b5bf53f40aba2c52f3f0e946, type: 3}
   _bodyTransform: {fileID: 2132349201}
 --- !u!114 &963194230

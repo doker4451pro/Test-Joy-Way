@@ -11,7 +11,7 @@ public class WaterStone : BaseWeapon
     {
         var bullet=ObjectPooler.Instance.GetObjectOfType<WaterBall>();
         SetBulletToStartPosition(bullet.transform);
-        bullet.AddForce(transform.forward*_forseStartBullet);
+        bullet.AddForce(transform.forward * _forseStartBullet);
     }
 
     private void SetBulletToStartPosition(Transform bulletTransform) 
